@@ -7,9 +7,16 @@ module.exports = {
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE,
-  define: {},
+  define: {
+    timestamps: true,
+    underscored: true,
+    underscoredAll: true,
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+  },
   dialectOptions: {
     timezone: 'America/Sao_Paulo',
+    encrypt: true,
   },
   timezone: 'America/Sao_Paulo',
 };
