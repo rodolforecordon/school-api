@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
 class TokenController {
@@ -18,14 +19,22 @@ class TokenController {
       });
     }
 
-    const passwordIsValid = await User.passwordIsValid(req.body.password);
-    if (!passwordIsValid) {
+    const pwdIsValid = await user.passwordIsValid(req.body.password);
+    if (!pwdIsValid) {
       return res.status(401).json({
         errors: ['Invalid email or password.'],
       });
     }
 
-    return res.json(user);
+    const { id } = user;
+
+    const token = jwt.sign(
+      { id, email },
+      process.env.TOKEN_SECRET,
+      { expiresIn: process.env.TOKEN_EXPIRATION },
+    );
+
+    return res.json({ token });
   }
 }
 
