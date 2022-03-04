@@ -1,6 +1,7 @@
 import Sequelize, { Model } from 'sequelize';
+import appConfig from '../config/appConfig';
 
-export default class Student extends Model {
+export default class Picture extends Model {
   static init(sequelize) {
     super.init({
       originalname: {
@@ -17,8 +18,14 @@ export default class Student extends Model {
         defaultValue: '',
         validate: {
           notEmpty: {
-            msg: 'originalName cannot be blank.',
+            msg: 'fileName cannot be blank.',
           },
+        },
+      },
+      url: {
+        type: Sequelize.VIRTUAL,
+        get() {
+          return `${appConfig.url}/images/${this.getDataValue('filename')}`;
         },
       },
     }, {
@@ -29,6 +36,6 @@ export default class Student extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Student, { foreignKey: 'aluno_id' });
+    this.belongsTo(models.Student, { foreignKey: 'student_id' });
   }
 }
